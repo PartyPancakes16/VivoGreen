@@ -132,7 +132,7 @@ public class Cassa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+        //jTable3.addRow(new Object[]{"Column 1", "Column 2", "Column 3","Column 4","Column 5"});
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
