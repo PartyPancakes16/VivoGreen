@@ -1,9 +1,9 @@
 import java.sql.*;
 
 public class Connessione_Database {
-
-    public static void main(String[] args) {
-
+    
+    public Connessione_Database()
+    {
         String connectionString="jdbc:mysql://localhost:3306/vivogreen";
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -15,10 +15,10 @@ public class Connessione_Database {
             connection = DriverManager.getConnection(connectionString, "root", ""); //Url, Utente, password
             System.out.println("Connessione stabilita");
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery("select * from prodotto"); //query da eseguire
+            /*ResultSet rs = stm.executeQuery("select * from prodotto"); //query da eseguire
             while (rs.next()) {
                 System.out.println(rs.getString("rfid") + " " + rs.getString("descrizione") + " " + rs.getFloat("prezzo") + " " + rs.getFloat("peso") + " " + rs.getDate("scadenza"));                
-            }
+            }*/
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -32,6 +32,14 @@ public class Connessione_Database {
                 // gestione errore in chiusura
             }
         }
+    }
+
+    public String Mostra()
+    {
+        String descrizione="",peso="",prezzo="",rfid="",data="";
+        
+    }
+    public static void main(String[] args) {
 
     }
 
