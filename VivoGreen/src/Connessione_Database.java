@@ -23,7 +23,7 @@ public class Connessione_Database {
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -31,7 +31,7 @@ public class Connessione_Database {
             } catch (SQLException e) {
                 // gestione errore in chiusura
             }
-        }
+        }*/
     }
 
     public void Mostra()
@@ -42,8 +42,7 @@ public class Connessione_Database {
         {
             ResultSet rs = stm.executeQuery("select * from prodotto"); //query da eseguire
             while (rs.next()) {
-                System.out.println(rs.getString("rfid") + " " + rs.getString("descrizione") + " " + rs.getFloat("prezzo") + " " + rs.getFloat("peso") + " " + rs.getDate("scadenza"));                
-                return s;
+                System.out.println(rs.getString("rfid") + " " + rs.getString("descrizione") + " " + rs.getFloat("prezzo") + " " + rs.getFloat("peso") + " " + rs.getDate("scadenza"));
             }
         }
         catch (SQLException e) {
@@ -51,7 +50,7 @@ public class Connessione_Database {
         }
     }
     public static void main(String[] args) {
-
+        Connessione_Database cd=new Connessione_Database();
+        cd.Mostra();
     }
-
 }
