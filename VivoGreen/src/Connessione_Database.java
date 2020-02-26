@@ -34,15 +34,16 @@ public class Connessione_Database {
         }*/
     }
 
-    public void Mostra()
+    public void MostraMagazzino()
     {
-        String descrizione="",peso="",prezzo="",rfid="",data="";
-        String s="";
         try
         {
-            ResultSet rs = stm.executeQuery("select * from prodotto"); //query da eseguire
+            ResultSet count = stm.executeQuery("select count(*) from prodotto");
+            count.next();
+            GlobalApplication.setValori(count.getInt(1));
+            ResultSet rs = stm.executeQuery("select * from prodotto");
             while (rs.next()) {
-                System.out.println(rs.getString("rfid") + " " + rs.getString("descrizione") + " " + rs.getFloat("prezzo") + " " + rs.getFloat("peso") + " " + rs.getDate("scadenza"));
+                GlobalApplication.setProdotto(rs.getString("rfid"),rs.getString("descrizione"),rs.getString("prezzo"),rs.getString("peso"),rs.getString("scadenza"));
             }
         }
         catch (SQLException e) {
@@ -50,7 +51,5 @@ public class Connessione_Database {
         }
     }
     public static void main(String[] args) {
-        Connessione_Database cd=new Connessione_Database();
-        cd.Mostra();
     }
 }
