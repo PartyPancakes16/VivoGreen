@@ -1,7 +1,7 @@
 import java.sql.*;
 
 public class Connessione_Database {
-    
+    Statement stm=null;
     public Connessione_Database()
     {
         String connectionString="jdbc:mysql://localhost:3306/vivogreen";
@@ -14,7 +14,7 @@ public class Connessione_Database {
         try {
             connection = DriverManager.getConnection(connectionString, "root", ""); //Url, Utente, password
             System.out.println("Connessione stabilita");
-            Statement stm = connection.createStatement();
+            stm = connection.createStatement();
             /*ResultSet rs = stm.executeQuery("select * from prodotto"); //query da eseguire
             while (rs.next()) {
                 System.out.println(rs.getString("rfid") + " " + rs.getString("descrizione") + " " + rs.getFloat("prezzo") + " " + rs.getFloat("peso") + " " + rs.getDate("scadenza"));                
@@ -34,10 +34,21 @@ public class Connessione_Database {
         }
     }
 
-    public String Mostra()
+    public void Mostra()
     {
         String descrizione="",peso="",prezzo="",rfid="",data="";
-        
+        String s="";
+        try
+        {
+            ResultSet rs = stm.executeQuery("select * from prodotto"); //query da eseguire
+            while (rs.next()) {
+                System.out.println(rs.getString("rfid") + " " + rs.getString("descrizione") + " " + rs.getFloat("prezzo") + " " + rs.getFloat("peso") + " " + rs.getDate("scadenza"));                
+                return s;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     public static void main(String[] args) {
 
