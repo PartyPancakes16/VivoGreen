@@ -15,9 +15,9 @@ public class Connessione_Database {
             connection = DriverManager.getConnection(connectionString, "root", ""); //Url, Utente, password
             System.out.println("Connessione stabilita");
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery("select * from anagrafica"); //query da eseguire
+            ResultSet rs = stm.executeQuery("select * from prodotto"); //query da eseguire
             while (rs.next()) {
-                System.out.println(rs.getInt("PK_Persona") + " " + rs.getString("Nome") + " " + rs.getString("Cognome") + " di anni " + rs.getInt("Età") + " " + rs.getDate("Data_nascita") + " " + rs.getString("Sesso") + " " + rs.getString("Luogo_nascita") + " " + rs.getString("Residenza"));
+                System.out.println(rs.getString("rfid") + " " + rs.getString("descrizione") + " " + rs.getFloat("prezzo") + " " + rs.getFloat("peso") + " " + rs.getDate("scadenza"));                
             }
         } catch (SQLException e) {
             e.printStackTrace();
