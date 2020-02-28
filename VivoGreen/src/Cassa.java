@@ -1,3 +1,22 @@
+
+import com.caen.RFIDLibrary.CAENRFIDException;
+import com.caen.RFIDLibrary.CAENRFIDLogicalSource;
+import com.caen.RFIDLibrary.CAENRFIDPort;
+import com.caen.RFIDLibrary.CAENRFIDReader;
+import com.caen.RFIDLibrary.CAENRFIDTag;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -132,7 +151,156 @@ public class Cassa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String url = "jdbc:mysql://localhost:3306/carrello_spesa";
+        Connection con;
+        String q = "";
+        Double totale = 0.0;
+        String RFID = ""; 
+        int errore =0;
         
+                
+        CAENRFIDReader MyReader = new CAENRFIDReader();
+        
+        try {
+            
+            //apertura file su cui scrivere
+            FileWriter f1 = null;
+        try {
+            f1 = new FileWriter("C:\\Users\\filic\\OneDrive\\Documents\\NetBeansProjects\\JavaApplication1\\tags_old.txt"); //true per aprire un file esistente
+        } catch (IOException ex) {
+            Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            PrintWriter fOUT = new PrintWriter(f1);
+        
+    
+            MyReader.Connect(CAENRFIDPort.CAENRFID_TCP, "192.168.0.2");
+            CAENRFIDLogicalSource MySource = MyReader.GetSource("Source_0");
+            
+            MySource.AddReadPoint("Ant1"); 
+            //MyReader.SetPower(100);
+                      
+            CAENRFIDTag[] MyTags = new CAENRFIDTag[1000];
+            MyTags = MySource.InventoryTag();
+            try{
+                int length = MyTags.length;
+                
+            }
+            catch (NullPointerException e){
+                errore = 1;
+                System.out.println("ECCEZIONE: NESSUN PRODOTTO PRESENTE NELL'AREA DI LETTURA.");
+                System.out.println();}
+            
+            if(errore==1){}else{
+            if(MyTags.length>0){
+                System.out.println("RFID LETTI NEL CARRELLO:");
+                System.out.println("");
+                for(int i =0; i<MyTags.length; i++){
+                    byte b[] = new byte[100];
+                    b = (MyTags[i].GetId());
+                    StringBuilder str = new StringBuilder();
+                    for (byte prova : b){
+                        str.append(String.format("%02x", prova));
+                    }
+                    RFID = str.toString();
+                    
+                    
+                    System.out.println(RFID);
+                    System.out.println("");
+                    
+                    fOUT.println(RFID);
+                    fOUT.flush();//invio dati
+                    
+                   
+                }
+                //System.out.println("Ho letto i prodotti dal carrello");
+                MyReader.Disconnect();
+                f1.close();
+                
+            
+            }
+            
+            
+            Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("ClassNotFoundException");
+            System.err.println(e.getMessage());
+        }
+        //fine connessione db       
+
+        //lettura da file di testo per ogni riga
+        try {
+            FileReader f = new FileReader("C:\\Users\\filic\\OneDrive\\Documents\\NetBeansProjects\\JavaApplication1\\tags_old.txt");//++++ ATTENZIONE A DOVE POSIZIONO IL FILE +++++
+            BufferedReader fIN = new BufferedReader(f);
+
+            String s = "";
+            System.out.println("CONFRONTO GLI RFID CON I PRODOTTI PRESENTI NEL DATABASE E RECUPERO IL NOME ED IL PREZZO DEL PRODOTTO:");
+            System.out.println("");
+            while (s != null) {
+                
+                
+                s = fIN.readLine();
+
+                q = "Select * from rfid where codice = '" + s + "'";
+                //eseguo la select per ogni riga letta da file
+                try {
+                    con = DriverManager.getConnection(url, "root", "");
+                    stmt = con.createStatement();
+                    ResultSet rs;
+
+                    rs = stmt.executeQuery(q);
+                    int c = 0;//contatore per verificare se l'rfid è presente nel db
+                    while (rs.next()) {
+                        c++;
+                        //String codice = rs.getString("codice");
+                        //System.out.print(codice + "\t");
+
+                        String descrizione = rs.getString("descrizione");
+                        System.out.print(descrizione + "\t\t\t");
+
+                        Double prezzo = rs.getDouble("prezzo");
+                        System.out.println(prezzo + " €");
+                        totale = totale + prezzo;
+
+                    }
+
+                    //if(c==1)System.out.println("prodotto trovato");
+                    //else if (c==0 && s!=null) System.out.println("prodotto non trovato");
+                    if (c == 0 && s != null) {
+                        System.out.println("prodotto non presente nel DB");
+                    }
+
+                    stmt.close();
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println("SQLException: ");
+                    System.err.println(e.getMessage());
+                }
+                //fine select
+
+                //System.out.println(s);
+            }//fine while di lettura per ogni riga del file txt
+            f.close();
+
+            System.out.println();
+            System.out.println("IL TOTALE DA PAGARE E' " + totale + " €");
+            System.out.println();
+
+        } catch (IOException e) {
+            System.out.println("errore nell'apertura del file " + e);
+            System.exit(1);
+        }
+            
+            
+            
+            
+            }//fine else
+        } catch (CAENRFIDException ex) {
+            Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
