@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -88,7 +89,7 @@ public class Cassa extends javax.swing.JFrame {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null}
+
             },
             new String [] {
                 "Prodotto", "Costo"
@@ -151,13 +152,15 @@ public class Cassa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String url = "jdbc:mysql://localhost:3306/carrello_spesa";
+        String url = "jdbc:mysql://localhost:3306/vivogreen";
         Connection con;
         String q = "";
         Double totale = 0.0;
         String RFID = ""; 
         int errore =0;
-        
+        CAENRFIDTag[] MyTags = null;
+        String descrizione = "";
+        Double prezzo = 0.0;
                 
         CAENRFIDReader MyReader = new CAENRFIDReader();
         
@@ -179,7 +182,7 @@ public class Cassa extends javax.swing.JFrame {
             MySource.AddReadPoint("Ant1"); 
             //MyReader.SetPower(100);
                       
-            CAENRFIDTag[] MyTags = new CAENRFIDTag[1000];
+            MyTags = new CAENRFIDTag[1000];
             MyTags = MySource.InventoryTag();
             try{
                 int length = MyTags.length;
@@ -256,10 +259,10 @@ public class Cassa extends javax.swing.JFrame {
                         //String codice = rs.getString("codice");
                         //System.out.print(codice + "\t");
 
-                        String descrizione = rs.getString("descrizione");
+                        descrizione = rs.getString("descrizione");
                         System.out.print(descrizione + "\t\t\t");
 
-                        Double prezzo = rs.getDouble("prezzo");
+                        prezzo = rs.getDouble("prezzo");
                         System.out.println(prezzo + " €");
                         totale = totale + prezzo;
 
@@ -301,6 +304,9 @@ public class Cassa extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
         }
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        for (int i=0;i<MyTags.length;i++)
+            model.addRow(new Object[]{descrizione,prezzo});
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
