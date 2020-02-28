@@ -4,6 +4,7 @@ import com.caen.RFIDLibrary.CAENRFIDLogicalSource;
 import com.caen.RFIDLibrary.CAENRFIDPort;
 import com.caen.RFIDLibrary.CAENRFIDReader;
 import com.caen.RFIDLibrary.CAENRFIDTag;
+import com.caen.RFIDLibrary.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -35,6 +36,7 @@ public class Cassa extends javax.swing.JFrame {
      */
     public Cassa() {
         initComponents();
+        
     }
 
     /**
@@ -152,6 +154,8 @@ public class Cassa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        
         String url = "jdbc:mysql://localhost:3306/vivogreen";
         Connection con;
         String q = "";
@@ -161,7 +165,7 @@ public class Cassa extends javax.swing.JFrame {
         CAENRFIDTag[] MyTags = null;
         String descrizione = "";
         Double prezzo = 0.0;
-                
+               
         CAENRFIDReader MyReader = new CAENRFIDReader();
         
         try {
@@ -179,14 +183,17 @@ public class Cassa extends javax.swing.JFrame {
             MyReader.Connect(CAENRFIDPort.CAENRFID_TCP, "192.168.0.2");
             CAENRFIDLogicalSource MySource = MyReader.GetSource("Source_0");
             
-            MySource.AddReadPoint("Ant1"); 
+            MySource.AddReadPoint("Ant1");
+            MySource.AddReadPoint("Ant2"); 
+            MySource.AddReadPoint("Ant3"); 
+            MySource.SetReadCycle(10);
             //MyReader.SetPower(100);
                       
             MyTags = new CAENRFIDTag[1000];
             MyTags = MySource.InventoryTag();
             try{
                 int length = MyTags.length;
-                
+                System.out.println(length);
             }
             catch (NullPointerException e){
                 errore = 1;
@@ -245,7 +252,7 @@ public class Cassa extends javax.swing.JFrame {
                 
                 s = fIN.readLine();
 
-                q = "Select * from rfid where codice = '" + s + "'";
+                q = "Select * from prodotto where rfid = '" + s + "'";
                 //eseguo la select per ogni riga letta da file
                 try {
                     con = DriverManager.getConnection(url, "root", "");
@@ -304,9 +311,14 @@ public class Cassa extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
         }
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-        for (int i=0;i<MyTags.length;i++)
+        
+        for (int i=1;i<=MyTags.length;i++) 
+            model.removeRow(MyTags.length);
+        
+        for (int i=0;i<MyTags.length;i++) 
             model.addRow(new Object[]{descrizione,prezzo});
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
