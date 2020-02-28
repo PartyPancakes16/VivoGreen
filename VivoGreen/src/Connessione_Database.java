@@ -40,7 +40,7 @@ public class Connessione_Database {
         {
             ResultSet count = stm.executeQuery("select count(*) from prodotto");
             count.next();
-            GlobalApplication.setValori(count.getInt(1));
+            GlobalApplication.setValori(count.getInt(1), 5);
             ResultSet rs = stm.executeQuery("select * from prodotto");
             while (rs.next()) {
                 GlobalApplication.setProdotto(rs.getString("rfid"),rs.getString("descrizione"),rs.getString("prezzo"),rs.getString("peso"),rs.getString("scadenza"));

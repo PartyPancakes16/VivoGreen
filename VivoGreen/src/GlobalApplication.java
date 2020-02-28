@@ -4,10 +4,10 @@ public class GlobalApplication {
     public static int dimdb=0,countdb=0;
     public static String valori[][];
     
-    public static final void setValori(int v)
+    public static final void setValori(int v, int c)
     {
         dimdb=v;
-        valori = new String[dimdb][5];
+        valori = new String[dimdb][c];
     }
     public static final void setProdotto(String rf,String de,String pr,String pe,String d)
     {
