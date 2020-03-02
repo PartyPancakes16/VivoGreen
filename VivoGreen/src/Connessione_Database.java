@@ -53,13 +53,9 @@ public class Connessione_Database {
         }
     }
     
-    public void Invio_Dati(String RFID,String prodotto,Double peso,Double prezzo,String scadenza)
+    public void Invio_Dati()
     {
-        try {
-            ResultSet ins = stm.executeQuery("INSERT INTO prodotto (rfid,descrizione,prezzo,peso,scadenza) VALUES (RFID,descrizione,prezzo,peso,scadenza)");
-        } catch (SQLException ex) {
-            Logger.getLogger(Connessione_Database.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }
     public static void main(String[] args) {
     }
