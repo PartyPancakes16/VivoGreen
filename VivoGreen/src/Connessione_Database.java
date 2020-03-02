@@ -53,7 +53,7 @@ public class Connessione_Database {
         }
     }
     
-    public void Invio_Dati(String RFID,String prodotto,String peso,String prezzo,String scadenza)
+    public void Invio_Dati(String RFID,String prodotto,Double peso,Double prezzo,String scadenza)
     {
         try {
             ResultSet ins = stm.executeQuery("INSERT INTO prodotto (rfid,descrizione,prezzo,peso,scadenza) VALUES (RFID,descrizione,prezzo,peso,scadenza)");

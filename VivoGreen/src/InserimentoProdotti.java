@@ -181,7 +181,9 @@ public class InserimentoProdotti extends javax.swing.JFrame {
        }
        
        Connessione_Database cn = new Connessione_Database();
-       cn.Invio_Dati(RFID,prodotto,prezzo,peso,scadenza);
+       Double pesoD = Double.valueOf(peso);
+       Double prezzoD = Double.valueOf(prezzo);
+       cn.Invio_Dati(RFID,prodotto,pesoD,prezzoD,scadenza);  
        
        
       //Codice per mandare i dati al DataBase
