@@ -56,7 +56,7 @@ public class Connessione_Database {
     public void Invio_Dati(String RFID,String prodotto,String peso,String prezzo,String scadenza)
     {
         try {
-            ResultSet count = stm.executeQuery("INSERT INTO Prodotto (RFID,descrizione,peso,prezzo,scadenza) VALUES (RFID,prodotto,peso,prezzo,scadenza");
+            ResultSet ins = stm.executeQuery("INSERT INTO prodotto (rfid,descrizione,prezzo,peso,scadenza) VALUES (RFID,descrizione,prezzo,peso,scadenza)");
         } catch (SQLException ex) {
             Logger.getLogger(Connessione_Database.class.getName()).log(Level.SEVERE, null, ex);
         }
