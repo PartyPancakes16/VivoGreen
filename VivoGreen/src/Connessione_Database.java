@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Connessione_Database {
     Statement stm=null;
@@ -48,6 +50,15 @@ public class Connessione_Database {
         }
         catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public void Invio_Dati(String RFID,String prodotto,String peso,String prezzo,String scadenza)
+    {
+        try {
+            ResultSet ins = stm.executeQuery("INSERT INTO prodotto (rfid,descrizione,prezzo,peso,scadenza) VALUES (RFID,descrizione,prezzo,peso,scadenza)");
+        } catch (SQLException ex) {
+            Logger.getLogger(Connessione_Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public static void main(String[] args) {
