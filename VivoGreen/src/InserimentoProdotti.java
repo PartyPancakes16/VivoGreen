@@ -181,17 +181,18 @@ public class InserimentoProdotti extends javax.swing.JFrame {
        }
        
        Connessione_Database cn = new Connessione_Database();
-       cn.Invio_Dati(RFID,prodotto,peso,prezzo,scadenza);
+       cn.Invio_Dati(RFID,prodotto,prezzo,peso,scadenza);
        
        
       //Codice per mandare i dati al DataBase
       
       //INSERT INTO Prodotto(RFID,prodotto,peso,prezzo,scadenza) VALUES (RFIDT,prodottoT,pesoT,prezzoTscdenzaT);
       
-      
+      TRFID.setText("");
       Tprodotto.setText("");
       Tpeso.setText("");
       Tprezzo.setText("");
+      TScadenza.setText("");
         
     }//GEN-LAST:event_INVIAActionPerformed
 
