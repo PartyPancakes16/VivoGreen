@@ -180,6 +180,10 @@ public class InserimentoProdotti extends javax.swing.JFrame {
            JOptionPane.showMessageDialog(null,"Manca l'inserimento della scdenza : ","VivoGreen Information",JOptionPane.INFORMATION_MESSAGE );
        }
        
+       Connessione_Database cn = new Connessione_Database();
+       cn.Invio_Dati(RFID,prodotto,peso,prezzo,scadenza);
+       
+       
       //Codice per mandare i dati al DataBase
       
       //INSERT INTO Prodotto(RFID,prodotto,peso,prezzo,scadenza) VALUES (RFIDT,prodottoT,pesoT,prezzoTscdenzaT);
