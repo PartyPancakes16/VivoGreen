@@ -154,6 +154,7 @@ public class InserimentoProdotti extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void INVIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_INVIAActionPerformed
@@ -204,7 +205,14 @@ public class InserimentoProdotti extends javax.swing.JFrame {
     }//GEN-LAST:event_INVIAActionPerformed
 
     private void TERMINAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TERMINAActionPerformed
-        
+        int reply =JOptionPane.showConfirmDialog(null,"Sei sicuro di voler uscire?","Vivogreen Information",JOptionPane.YES_NO_OPTION);
+        if(reply==JOptionPane.YES_OPTION){
+            setVisible(false);
+            dispose();
+            Menu m = new Menu();
+            m.setVisible(true);
+        }else
+        {}
     }//GEN-LAST:event_TERMINAActionPerformed
 
     /**

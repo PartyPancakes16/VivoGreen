@@ -106,11 +106,9 @@ public class Menu extends javax.swing.JFrame {
         jMenuBar1.setPreferredSize(new java.awt.Dimension(19, 35));
 
         jMenu1.setBackground(new java.awt.Color(255, 255, 255));
-        jMenu1.setForeground(new java.awt.Color(0, 0, 0));
         jMenu1.setText("=");
 
         jMenuItem1.setBackground(new java.awt.Color(255, 255, 255));
-        jMenuItem1.setForeground(new java.awt.Color(0, 0, 0));
         jMenuItem1.setText("Prodotti");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,7 +118,6 @@ public class Menu extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setBackground(new java.awt.Color(255, 255, 255));
-        jMenuItem2.setForeground(new java.awt.Color(0, 0, 0));
         jMenuItem2.setText("Magazzino");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,7 +127,6 @@ public class Menu extends javax.swing.JFrame {
         jMenu1.add(jMenuItem2);
 
         jMenuItem3.setBackground(new java.awt.Color(255, 255, 255));
-        jMenuItem3.setForeground(new java.awt.Color(0, 0, 0));
         jMenuItem3.setText("Cassa");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,24 +151,37 @@ public class Menu extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
         InserimentoProdotti p = new InserimentoProdotti();
         p.setVisible(true);
+        
+        //chiudere Menu
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         Magazzino m = new Magazzino();
         m.setVisible(true);
+        
+         //chiudere Menu
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
         Cassa c = new Cassa();
         c.setVisible(true);
+        
+         //chiudere Menu
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
