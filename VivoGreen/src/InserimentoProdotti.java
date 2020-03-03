@@ -211,8 +211,7 @@ public class InserimentoProdotti extends javax.swing.JFrame {
             dispose();
             Menu m = new Menu();
             m.setVisible(true);
-        }else
-        {}
+        }
     }//GEN-LAST:event_TERMINAActionPerformed
 
     /**
