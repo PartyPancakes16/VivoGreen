@@ -1,4 +1,9 @@
 
+import com.mysql.fabric.xmlrpc.base.Data;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.imageio.IIOException;
 import javax.swing.JOptionPane;
 
 /*
@@ -183,12 +188,12 @@ public class InserimentoProdotti extends javax.swing.JFrame {
        Connessione_Database cn = new Connessione_Database();
        Double pesoD = Double.valueOf(peso);
        Double prezzoD = Double.valueOf(prezzo);
-        
+       
+        cn.Invio_Dati(RFID, prodotto, pesoD, prezzoD, scadenza);
        
        
       //Codice per mandare i dati al DataBase
       
-      //INSERT INTO Prodotto(RFID,prodotto,peso,prezzo,scadenza) VALUES (RFIDT,prodottoT,pesoT,prezzoTscdenzaT);
       
       TRFID.setText("");
       Tprodotto.setText("");
