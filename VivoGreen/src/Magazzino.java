@@ -2,7 +2,10 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 public class Magazzino extends javax.swing.JFrame {
-
+static String prodotti[][];
+DefaultTableModel model;
+static Connessione_Database cd = new Connessione_Database();
+static int dim=0;
     /**
      * Creates new form Magazzino
      */
@@ -100,14 +103,8 @@ public class Magazzino extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        Connessione_Database cd = new Connessione_Database();
-        cd.MostraMagazzino();
-        int dim=GlobalApplication.dimdb;
-        String prodotti[][] = new String [dim][5];
-        for (int i=0;i<dim;i++)
-            for (int j=0;j<5;j++)
-                prodotti[i][j]=GlobalApplication.getProdotto(i,j);
+        model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
         for (int i=0;i<dim;i++)
             model.addRow(new Object[]{prodotti[i][0],prodotti[i][1],prodotti[i][2],prodotti[i][3],prodotti[i][4]});
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -126,6 +123,12 @@ public class Magazzino extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        cd.MostraMagazzino();
+        dim=GlobalApplication.dimdb;
+        prodotti = new String [dim][5];
+        for (int i=0;i<dim;i++)
+            for (int j=0;j<5;j++)
+                prodotti[i][j]=GlobalApplication.getProdotto(i,j);
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
