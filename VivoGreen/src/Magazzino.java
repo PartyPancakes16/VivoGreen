@@ -106,9 +106,7 @@ static int dim=0;
         model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         for (int i=0;i<dim;i++)
-        {
             model.addRow(new Object[]{prodotti[i][0],prodotti[i][1],prodotti[i][2],prodotti[i][3],prodotti[i][4]});
-        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
