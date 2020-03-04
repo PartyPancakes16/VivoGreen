@@ -2,6 +2,7 @@
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,6 +79,35 @@ public class Connessione_Database {
         } catch (SQLException ex) {
             Logger.getLogger(Connessione_Database.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+     public void ArrayRFID()
+    {
+        ArrayList<String> lettura1 = new ArrayList<>();
+        ArrayList<String> lettura2 = new ArrayList<>();
+        
+        try {
+            ResultSet rs = stm.executeQuery("select RFID from prodotto ");
+            
+              
+            while(rs.next())
+                lettura1.add(rs.getString("rfid"));
+            for(int i=0;i<lettura1.size();i++){
+            if(lettura2.contains(lettura1)){}
+            else{
+                lettura2.add(lettura1.get(i));
+            }
+            
+            
+                }    
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Connessione_Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+      
     }
 
     public static void main(String[] args) {
