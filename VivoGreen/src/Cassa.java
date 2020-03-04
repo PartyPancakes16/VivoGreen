@@ -25,7 +25,6 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author aniel
@@ -35,9 +34,25 @@ public class Cassa extends javax.swing.JFrame {
     /**
      * Creates new form Cassa
      */
-    public Cassa() {
+    
+    
+    CAENRFIDTag[] MyTags = null;
+CAENRFIDReader MyReader = new CAENRFIDReader();
+CAENRFIDLogicalSource MySource=null;
+
+           
+    
+    public Cassa() throws CAENRFIDException {
         initComponents();
+            MyReader.Connect(CAENRFIDPort.CAENRFID_TCP, "192.168.0.2");
+            System.out.println("pp");
+            MySource = MyReader.GetSource("Source_0");
+            MySource.AddReadPoint("Ant1");
+            
         
+        
+    
+
     }
 
     /**
@@ -166,177 +181,184 @@ public class Cassa extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        System.out.println(model.getRowCount());
+        if (model.getRowCount() != 0) {
+            for (int i = model.getRowCount() - 1; i >= 0; i--) {
+
+                System.out.println("Rimuovo la riga " + i);
+                model.removeRow(i);
+
+            }
+        }
+        String s = "";
         String url = "jdbc:mysql://localhost:3306/vivogreen";
         Connection con;
         String q = "";
         Double totale = 0.0;
-        String RFID = ""; 
-        int errore =0;
-        CAENRFIDTag[] MyTags = null;
+        String RFID = "";
+        int errore = 0;
+        
         String descrizione = "";
         Double prezzo = 0.0;
-               
-        CAENRFIDReader MyReader = new CAENRFIDReader();
+
+        
+        System.out.println("prova");
         
         try {
-            
+
             //apertura file su cui scrivere
             FileWriter f1 = null;
-        try {
-            f1 = new FileWriter("C:\\Users\\filic\\OneDrive\\Documents\\NetBeansProjects\\JavaApplication1\\tags_old.txt"); //true per aprire un file esistente
-        } catch (IOException ex) {
-            Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            try {
+                f1 = new FileWriter("C:\\Users\\filic\\OneDrive\\Documents\\GitHub\\VivoGreen\\VivoGreen\\tags_old.txt"); //true per aprire un file esistente
+            } catch (IOException ex) {
+                Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
+            }
             PrintWriter fOUT = new PrintWriter(f1);
-        
-    
-            MyReader.Connect(CAENRFIDPort.CAENRFID_TCP, "192.168.0.2");
-            CAENRFIDLogicalSource MySource = MyReader.GetSource("Source_0");
-            
-            MySource.AddReadPoint("Ant1");
-            MySource.AddReadPoint("Ant2"); 
-            MySource.AddReadPoint("Ant3"); 
-            MySource.SetReadCycle(10);
+
+            System.out.println("se");
+
+            //MySource.AddReadPoint("Ant2"); 
+            //MySource.AddReadPoint("Ant3"); 
+            //MySource.SetReadCycle(1000);
             //MyReader.SetPower(100);
-                      
-            MyTags = new CAENRFIDTag[1000];
+
             MyTags = MySource.InventoryTag();
-            try{
+            
+            System.out.println("prova2");
+            //MyTags = new CAENRFIDTag[1000];
+            System.out.println("ll");
+            
+            System.out.println("gg");
+            try {
                 int length = MyTags.length;
                 System.out.println(length);
-            }
-            catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 errore = 1;
                 System.out.println("ECCEZIONE: NESSUN PRODOTTO PRESENTE NELL'AREA DI LETTURA.");
-                System.out.println();}
-            
-            if(errore==1){}else{
-            if(MyTags.length>0){
-                System.out.println("RFID LETTI NEL CARRELLO:");
-                System.out.println("");
-                for(int i =0; i<MyTags.length; i++){
-                    byte b[] = new byte[100];
-                    b = (MyTags[i].GetId());
-                    StringBuilder str = new StringBuilder();
-                    for (byte prova : b){
-                        str.append(String.format("%02x", prova));
-                    }
-                    RFID = str.toString();
-                    
-                    
-                    System.out.println(RFID);
-                    System.out.println("");
-                    
-                    fOUT.println(RFID);
-                    fOUT.flush();//invio dati
-                    
-                   
-                }
-                //System.out.println("Ho letto i prodotti dal carrello");
-                MyReader.Disconnect();
-                f1.close();
-                
-            
+                System.out.println();
             }
-            
-            
-            Statement stmt;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("ClassNotFoundException");
-            System.err.println(e.getMessage());
-        }
-        //fine connessione db       
 
-        //lettura da file di testo per ogni riga
-        try {
-            FileReader f = new FileReader("C:\\Users\\filic\\OneDrive\\Documents\\NetBeansProjects\\JavaApplication1\\tags_old.txt");//++++ ATTENZIONE A DOVE POSIZIONO IL FILE +++++
-            BufferedReader fIN = new BufferedReader(f);
+            if (errore == 1) {
+            } else {
+                if (MyTags.length > 0) {
+                    System.out.println("RFID LETTI NEL CARRELLO:");
+                    System.out.println("");
+                    for (int i = 0; i < MyTags.length; i++) {
+                        byte b[] = new byte[100];
+                        b = (MyTags[i].GetId());
+                        StringBuilder str = new StringBuilder();
+                        for (byte prova : b) {
+                            str.append(String.format("%02x", prova));
+                        }
+                        RFID = str.toString();
 
-            String s = "";
-            System.out.println("CONFRONTO GLI RFID CON I PRODOTTI PRESENTI NEL DATABASE E RECUPERO IL NOME ED IL PREZZO DEL PRODOTTO:");
-            System.out.println("");
-            while (s != null) {
-                
-                
-                s = fIN.readLine();
+                        System.out.println(RFID);
+                        System.out.println("");
 
-                q = "Select * from prodotto where rfid = '" + s + "'";
-                //eseguo la select per ogni riga letta da file
+                        fOUT.println(RFID);
+                        fOUT.flush();//invio dati
+
+                    }
+                    //System.out.println("Ho letto i prodotti dal carrello");
+                    MyReader.Disconnect();
+                    f1.close();
+
+                }
+
+                Statement stmt;
                 try {
-                    con = DriverManager.getConnection(url, "root", "");
-                    stmt = con.createStatement();
-                    ResultSet rs;
-
-                    rs = stmt.executeQuery(q);
-                    int c = 0;//contatore per verificare se l'rfid è presente nel db
-                    while (rs.next()) {
-                        c++;
-                        //String codice = rs.getString("codice");
-                        //System.out.print(codice + "\t");
-
-                        descrizione = rs.getString("descrizione");
-                        System.out.print(descrizione + "\t\t\t");
-
-                        prezzo = rs.getDouble("prezzo");
-                        System.out.println(prezzo + " €");
-                        totale = totale + prezzo;
-                        jLabel2.setText(String.valueOf(totale));
-                    }
-
-                    //if(c==1)System.out.println("prodotto trovato");
-                    //else if (c==0 && s!=null) System.out.println("prodotto non trovato");
-                    if (c == 0 && s != null) {
-                        System.out.println("prodotto non presente nel DB");
-                    }
-
-                    stmt.close();
-                    con.close();
-                } catch (SQLException e) {
-                    System.err.println("SQLException: ");
+                    Class.forName("com.mysql.jdbc.Driver");
+                } catch (ClassNotFoundException e) {
+                    System.err.println("ClassNotFoundException");
                     System.err.println(e.getMessage());
                 }
-                //fine select
+                //fine connessione db       
 
-                //System.out.println(s);
-            }//fine while di lettura per ogni riga del file txt
-            f.close();
+                //lettura da file di testo per ogni riga
+                try {
+                    FileReader f = new FileReader("C:\\Users\\filic\\OneDrive\\Documents\\GitHub\\VivoGreen\\VivoGreen\\tags_old.txt");//++++ ATTENZIONE A DOVE POSIZIONO IL FILE +++++
+                    BufferedReader fIN = new BufferedReader(f);
 
-            System.out.println();
-            System.out.println("IL TOTALE DA PAGARE E' " + totale + " €");
-            System.out.println();
+                    System.out.println("CONFRONTO GLI RFID CON I PRODOTTI PRESENTI NEL DATABASE E RECUPERO IL NOME ED IL PREZZO DEL PRODOTTO:");
+                    System.out.println("");
+                    while (s != null) {
 
-        } catch (IOException e) {
-            System.out.println("errore nell'apertura del file " + e);
-            System.exit(1);
-        }
-            
-            
-            
-            
+                        s = fIN.readLine();
+
+                        q = "Select * from prodotto where rfid = '" + s + "'";
+                        //eseguo la select per ogni riga letta da file
+                        try {
+                            con = DriverManager.getConnection(url, "root", "");
+                            stmt = con.createStatement();
+                            ResultSet rs;
+
+                            rs = stmt.executeQuery(q);
+                            int c = 0;//contatore per verificare se l'rfid è presente nel db
+                            while (rs.next()) {
+                                c++;
+                                //String codice = rs.getString("codice");
+                                //System.out.print(codice + "\t");
+
+                                descrizione = rs.getString("descrizione");
+                                System.out.print(descrizione + "\t\t\t");
+
+                                prezzo = rs.getDouble("prezzo");
+                                System.out.println(prezzo + " €");
+                                totale = totale + prezzo;
+                                jLabel2.setText(String.valueOf(totale));
+                            }
+
+                            //if(c==1)System.out.println("prodotto trovato");
+                            //else if (c==0 && s!=null) System.out.println("prodotto non trovato");
+                            if (c == 0 && s != null) {
+                                System.out.println("prodotto non presente nel DB");
+                            }
+
+                            stmt.close();
+                            con.close();
+                        } catch (SQLException e) {
+                            System.err.println("SQLException: ");
+                            System.err.println(e.getMessage());
+                        }
+                        //fine select
+
+                        //System.out.println(s);
+                    }//fine while di lettura per ogni riga del file txt
+                    f.close();
+
+                    System.out.println();
+                    System.out.println("IL TOTALE DA PAGARE E' " + totale + " €");
+                    System.out.println();
+
+                } catch (IOException e) {
+                    System.out.println("errore nell'apertura del file " + e);
+                    System.exit(1);
+                }
+
             }//fine else
         } catch (CAENRFIDException ex) {
             Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        for (int i=1;i<=MyTags.length;i++) 
-            model.removeRow(MyTags.length);
-        
-        for (int i=0;i<MyTags.length;i++) 
-            model.addRow(new Object[]{descrizione,prezzo});
-        
-        
+
+        if (s != null) {
+        } else {
+            for (int i = 0; i < MyTags.length; i++) {
+                model.addRow(new Object[]{descrizione, prezzo});
+                System.out.println("aggiungo la riga " + i);
+            }
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int reply =JOptionPane.showConfirmDialog(null,"Sei sicuro di voler uscire?","Vivogreen Information",JOptionPane.YES_NO_OPTION);
-        if(reply==JOptionPane.YES_OPTION){
+        int reply = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Vivogreen Information", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
             setVisible(false);
             dispose();
             Menu m = new Menu();
@@ -374,8 +396,12 @@ public class Cassa extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Cassa().setVisible(true);
-                
+                try {
+                    new Cassa().setVisible(true);
+                } catch (CAENRFIDException ex) {
+                    Logger.getLogger(Cassa.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         });
     }

@@ -176,8 +176,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        Cassa c = new Cassa();
-        c.setVisible(true);
+        //Cassa c = new Cassa();
+        //c.setVisible(true);
         
          //chiudere Menu
         setVisible(false);
